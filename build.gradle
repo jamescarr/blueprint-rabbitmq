@@ -1,0 +1,21 @@
+subprojects {
+    apply plugin: 'eclipse'
+   task "create-dirs" << {
+      def createDir = {
+       println "> creating $it"
+       it.mkdirs()
+      }
+
+      if(project.hasProperty('webAppDir')){
+        createDir(webAppDir)
+      }
+      if(sourceSets.all*.hasProperty('groovy').contains(true)){
+       sourceSets.all*.groovy.srcDirs*.each createDir
+      }else if(sourceSets.all*.hasProperty('scala').contains(true)){
+       sourceSets.all*.scala.srcDirs*.each createDir
+      }else{
+       sourceSets.all*.java.srcDirs*.each createDir
+      }
+      sourceSets.all*.resources.srcDirs*.each createDir
+   }
+}
