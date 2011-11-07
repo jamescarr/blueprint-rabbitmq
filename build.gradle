@@ -1,5 +1,11 @@
 subprojects {
-    apply plugin: 'eclipse'
+   apply plugin: 'eclipse'
+   repositories {
+     // mavenRepo urls: 'http://resolver/all'
+     mavenCentral()
+     mavenRepo urls: ['http://maven.springframework.org/milestone/', 'http://repository.springsource.com/maven/bundles/release/']
+   }
+
    task "create-dirs" << {
       def createDir = {
        println "> creating $it"
