@@ -10,17 +10,17 @@ starting point to understanding spring-amqp.
 
 For an example of a simple message listener with no marshalling, run:
 
-  git checkout simple
+    git checkout simple
 
 For an example of using MessageListenerAdapter to have a POJO receive a message
 as a java object run:
   
-  git checkout message-listener-adapter
+    git checkout message-listener-adapter
 
 ## Running It
 Whenever you check out a tag or branch the first thing you should do is run 
 
-  gradle eclipse
+    gradle eclipse
 
 Fromt he root of the project. Then from eclipse import the directory and it
 should bring all of the subprojects in to your workspace.
