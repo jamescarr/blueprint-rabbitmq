@@ -1,23 +1,17 @@
 package com.carfax.blueprint.amqp;
 
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.converter.JsonMessageConverter;
-import org.springframework.beans.factory.annotation.Autowire;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor;
 
 @Configuration
 public class ApplicationConfig {
@@ -45,7 +39,7 @@ public class ApplicationConfig {
 	}
 	@Bean
 	public MessageListener messageListener() {
-		return new SimpleMessageListener();
+		return new MessageListenerAdapter(new VehicleChangeListener(), new JsonMessageConverter());
 	}
 	public static void main(String... args){
 		new AnnotationConfigApplicationContext(ApplicationConfig.class);
