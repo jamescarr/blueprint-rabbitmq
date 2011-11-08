@@ -4,9 +4,12 @@ dependencies {
 	compile project(':domain')
 	compile "org.springframework.amqp:spring-amqp:$springAmqpVersion",
 			"org.springframework.amqp:spring-rabbit:$springAmqpVersion",
+			"org.springframework:spring-core:$springVersion",
 			"org.springframework:spring-context:$springVersion",
 			"org.codehaus.jackson:jackson-mapper-asl:$jacksonVersion",
 			"cglib:cglib-nodep:2.2"
+	compile "org.slf4j:jcl-over-slf4j:$slf4jVersion",
+		"org.slf4j:slf4j-log4j12:$slf4jVersion"
 		
 	testCompile "junit:junit:4.8.2",
 		"org.mockito:mockito-all:1.8.5",
