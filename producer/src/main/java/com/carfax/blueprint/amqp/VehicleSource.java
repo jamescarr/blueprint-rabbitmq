@@ -9,6 +9,7 @@ import com.google.common.collect.Iterators;
 public class VehicleSource {
 	private final LinkedList<Vehicle> vehicles = new LinkedList<Vehicle>();
 	private final Iterator<Vehicle> cyclingIterator = Iterators.cycle(vehicles);
+	
 	public void add(Vehicle vehicle){
 		vehicles.add(vehicle);
 	}

@@ -16,3 +16,7 @@ dependencies {
 		"org.mockito:mockito-all:1.8.5",
 		"org.springframework:spring-test:$springVersion"
 }
+
+[jettyRun, jettyRunWar]*.with {
+	jettyEnvXml = file('src/test/resources/jetty-jndi.xml')
+}
