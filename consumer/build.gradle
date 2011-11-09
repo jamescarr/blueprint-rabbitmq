@@ -1,10 +1,11 @@
 apply plugin: 'java'
+apply plugin: 'jetty'
 
 dependencies {
 	compile project(':domain')
 	compile "org.springframework.amqp:spring-amqp:$springAmqpVersion",
 			"org.springframework.amqp:spring-rabbit:$springAmqpVersion",
-			"org.springframework:spring-context:$springVersion",
+			"org.springframework:spring-webmvc:$springVersion",
 			"org.codehaus.jackson:jackson-mapper-asl:$jacksonVersion",
 			"cglib:cglib-nodep:2.2"
 			

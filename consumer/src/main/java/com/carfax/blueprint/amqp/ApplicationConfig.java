@@ -9,7 +9,6 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.converter.JsonMessageConverter;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -40,8 +39,5 @@ public class ApplicationConfig {
 	@Bean
 	public MessageListener messageListener() {
 		return new MessageListenerAdapter(new VehicleChangeListener(), new JsonMessageConverter());
-	}
-	public static void main(String... args){
-		new AnnotationConfigApplicationContext(ApplicationConfig.class);
 	}
 }
