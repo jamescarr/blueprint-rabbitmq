@@ -12,8 +12,7 @@
 	<rabbit:queue id="queue" name="vehicle.changes"></rabbit:queue>
 	<rabbit:listener-container 
 		concurrency="2"
-		connection-factory="amqpConnectionFactory"
-		>
+		connection-factory="amqpConnectionFactory">
 		<rabbit:listener ref="messageListener" queue-names="vehicle.changes"/>
 	</rabbit:listener-container>
 		
