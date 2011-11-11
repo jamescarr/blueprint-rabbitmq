@@ -34,3 +34,7 @@ Have fun!
 ## Topic Branches
 * webcontainer-example - example of using rabbitMQ within a webcontainer
 * webcontainer-example-jndi - same as above, but with the connection factory provided via jndi
+* topic-exchange-example - uses a topic exchange with a queue bound to the
+exchange
+* topic-exchange-example-multiple-queues - illustrates using multiple queues
+with a single exchange
