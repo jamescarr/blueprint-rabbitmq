@@ -1,13 +1,11 @@
 package com.carfax.blueprint.amqp;
 
 
-import javax.annotation.Resource;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
@@ -27,6 +25,12 @@ public class ApplicationConfig {
 	@Bean
 	Queue queue(){
 		return new Queue("vehicle.changes");
+	}
+	@Bean
+	Binding binding(){
+		return BindingBuilder
+			.bind(new Queue("vehicle.changes"))
+			.to(new TopicExchange("vehicle_history_changes")).with("#");
 	}
 	@Bean
 	RabbitAdmin rabbitAdmin(){

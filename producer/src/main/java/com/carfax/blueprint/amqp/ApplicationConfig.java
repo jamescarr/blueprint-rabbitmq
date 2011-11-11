@@ -1,7 +1,7 @@
 package com.carfax.blueprint.amqp;
 
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -20,19 +20,21 @@ public class ApplicationConfig {
 	ConnectionFactory amqpConnectionFactory(){
 		return new CachingConnectionFactory();
 	}
-	@Bean
-	Queue queue(){
-		return new Queue("vehicle.changes");
-	}
+
 	@Bean
 	RabbitAdmin rabbitAdmin(){
 		return new RabbitAdmin(amqpConnectionFactory());
 	}
 	@Bean
+	TopicExchange exchange(){
+		return new TopicExchange("vehicle_history_changes");
+	}
+	
+	@Bean
 	AmqpTemplate amqpTemplate(){
 		RabbitTemplate template = new RabbitTemplate(amqpConnectionFactory());
-		template.setRoutingKey("vehicle.changes");
 		template.setMessageConverter(new JsonMessageConverter());
+		template.setExchange("vehicle_history_changes");
 		return template;
 	}
 	
