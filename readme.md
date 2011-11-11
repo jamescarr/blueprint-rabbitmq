@@ -30,3 +30,7 @@ running the same class from the producer will start the producer up and publish
 some test messages.
 
 Have fun!
+
+## Topic Branches
+* webcontainer-example - example of using rabbitMQ within a webcontainer
+* webcontainer-example-jndi - same as above, but with the connection factory provided via jndi
