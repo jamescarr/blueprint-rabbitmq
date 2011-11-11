@@ -1,7 +1,5 @@
 package com.carfax.blueprint.amqp;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
