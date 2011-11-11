@@ -23,31 +23,50 @@ public class ApplicationConfig {
 	ConnectionFactory amqpConnectionFactory;
 	
 	@Bean
-	Queue queue(){
-		return new Queue("vehicle.changes");
+	Queue stolenQueue(){
+		return new Queue("stolen_records");
 	}
 	@Bean
-	Binding binding(){
+	Queue serviceQueue(){
+		return new Queue("service_vehicles");
+	}
+	@Bean
+	Binding stolenBinding(){
 		return BindingBuilder
-			.bind(new Queue("vehicle.changes"))
-			.to(new TopicExchange("vehicle_history_changes")).with("#");
+			.bind(stolenQueue())
+			.to(new TopicExchange("vehicle_history_changes"))
+			.with("vehicle.history.stolen");
+	}
+	@Bean
+	Binding serviceBinding(){
+		return BindingBuilder
+			.bind(serviceQueue())
+			.to(new TopicExchange("vehicle_history_changes"))
+			.with("vehicle.history.service");
 	}
 	@Bean
 	RabbitAdmin rabbitAdmin(){
 		return new RabbitAdmin(amqpConnectionFactory);
 	}
-	
 	@Bean
-	public SimpleMessageListenerContainer container(){
+	public SimpleMessageListenerContainer serviceListener(){
 		SimpleMessageListenerContainer container= new SimpleMessageListenerContainer(amqpConnectionFactory);
-		container.setQueueNames("vehicle.changes");
+		container.setQueueNames(serviceQueue().getName());
 		container.setAutoStartup(true);
 		container.setConcurrentConsumers(2);
-		container.setMessageListener(messageListener());
+		container.setMessageListener(messageListener(new ServiceRecordListener()));
 		return container;
 	}
 	@Bean
-	public MessageListener messageListener() {
-		return new MessageListenerAdapter(new VehicleChangeListener(), new JsonMessageConverter());
+	public SimpleMessageListenerContainer stolenListener(){
+		SimpleMessageListenerContainer container= new SimpleMessageListenerContainer(amqpConnectionFactory);
+		container.setQueueNames(stolenQueue().getName());
+		container.setAutoStartup(true);
+		container.setConcurrentConsumers(2);
+		container.setMessageListener(messageListener(new StolenRecordListener()));
+		return container;
+	}
+	private MessageListener messageListener(VehicleChangeListener listener) {
+		return new MessageListenerAdapter(listener, new JsonMessageConverter());
 	}
 }
