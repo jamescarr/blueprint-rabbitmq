@@ -1,5 +1,8 @@
 apply plugin: 'java'
+apply plugin: 'application'
 apply plugin: 'jetty'
+
+mainClassName="com.carfax.blueprint.amqp.ApplicationConfig"
 
 dependencies {
 	compile project(':domain')

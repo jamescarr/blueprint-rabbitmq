@@ -1,5 +1,7 @@
 package com.carfax.blueprint.amqp;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.apache.log4j.spi.LoggerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 public class HistoryProcessor {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HistoryProcessor.class);
+	private static final AtomicInteger numberSent = new AtomicInteger();
 	private AmqpTemplate amqpTemplate;
 	private VehicleSource vehicleSource;
 	public void setVehicleSource(VehicleSource vehicleSource) {
@@ -22,7 +25,7 @@ public class HistoryProcessor {
 	public void process(){
 		Vehicle vehicle = vehicleSource.next();
 		if(vehicle != null){
-			LOGGER.info("Sending vehicle with make " + vehicle.getMake() + " and model " + vehicle.getModel());
+			LOGGER.info("Sending message "+numberSent.incrementAndGet());
 			amqpTemplate.convertAndSend(vehicle);
 		}
 		
