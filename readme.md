@@ -23,5 +23,21 @@ messages grow. However it is completely possible to reimplement the
 Queue as something that overflows to disk when a certain threshold is
 reached.
 
+## Running It
+To run the producer, type
+  
+  gradle producer:run 
+
+from the root of the project. As always, to run the consumer type
+
+  gradle consumer:run
+
+from the root of the project as well.
+
+To see the failover in action, stop and start your rabbitmq server to
+mimic an interuption in service. 
+
+Cheers!
+
 
 
