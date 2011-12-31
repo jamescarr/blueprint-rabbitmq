@@ -1,32 +1,27 @@
-# RabbitMQ Blueprint Project
-This is a blueprint project illustrating how to use rabbitMQ on the JVM. It
-uses a multi-module project setup and will have branches dedicated to different
-topics (different exchange types, messaging patterns, within a web container,
-etc).
+# RabbitMQ Publisher Buffering
+In this branch I experimented with an idea of buffering messages that
+couldn't be published because of a connection failure. 
 
-## Checking Out the Examples
-The master branch has two tagged examples that are meant to be taken as a
-starting point to understanding spring-amqp. 
+I basically
+extend RabbitTemplate with BufferedRabbitTemplate in the producer module
+which simply adds messages to an instance of java.util.Queue when a
+ConnectException occurs. THe message is wrapped in a special object of
+type UnsentMessage that contains the routing key, exchange, and the
+message. The ConnectException is not propagated up.
 
-For an example of a simple message listener with no marshalling, run:
+To send the unsent messages back out on reconnection I use
+UnsetnMessageHandler (which is an instance of ConnectionListenr) which
+has the java.util.Queue used in BufferedRabbitTemplate and an
+AmqpTemplate instance as dependencies. On connection creation it
+attempts to drain all the unsent messages from the unsent messages queue
+and publish them all out on the provided AmqpTemplate.
 
-    git checkout simple
+## Drawbacks
+The actual implementation in this example is an in memory
+ConcurrentLinkedQueue, so failure is likely as the number of unpublished
+messages grow. However it is completely possible to reimplement the
+Queue as something that overflows to disk when a certain threshold is
+reached.
 
-For an example of using MessageListenerAdapter to have a POJO receive a message
-as a java object run:
-  
-    git checkout message-listener-adapter
 
-## Running It
-Whenever you check out a tag or branch the first thing you should do is run 
 
-    gradle eclipse
-
-Fromt he root of the project. Then from eclipse import the directory and it
-should bring all of the subprojects in to your workspace.
-
-Running the ApplicationConfig from the consumer will start the consumer up,
-running the same class from the producer will start the producer up and publish
-some test messages.
-
-Have fun!
