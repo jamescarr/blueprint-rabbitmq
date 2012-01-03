@@ -19,10 +19,15 @@
 		p:routingKey="vehicle.changes"
 		p:messageConverter-ref="messageConverter"/>
 	
-	<bean id="failOverQueue" class="java.util.concurrent.ConcurrentLinkedQueue"/>
 	
 	<bean id="unsentMessagesHandler" class="com.carfax.blueprint.amqp.UnsentMessageHandler" 
 		p:amqpTemplate-ref="amqpTemplate"
 		p:failOverQueue-ref="failOverQueue"/>
-		
+	
+	<!-- Ehcache library setup -->
+	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="ehcache.xml"/>
+	<bean id="cache" class="org.springframework.cache.Cache" factory-bean="ehcache" factory-method="getCache">
+		<constructor-arg value="com.carfax.blueprint.producer"/>
+	</bean>
+	<bean id="failOverQueue" class="com.carfax.blueprint.amqp.CacheQueue" p:cache-ref="cache"/>
 </beans>
